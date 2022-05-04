@@ -64,7 +64,7 @@ Now that the lab environment is in a running state, follow the below steps to ge
    - **Username:** THYLAB\adm-training
    - **Password:** *Provided by the trainer*
 
-3. If Chrome did open up, close it.
+3. 
 
 # Integration existing Secret Server
 
