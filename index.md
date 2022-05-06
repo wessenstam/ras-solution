@@ -10,7 +10,7 @@ This lab will highlight the following topics:
 1. Log into a cloud tenant of Delinea solution (platform 1.0)
 2. Deploying the Cloud Connector so the cloud tenant can communicate with the organisation's infrastructure 
 3. Integration of the existing Secret Server installation with Platform 1.0
-4. Configure Platform 1.0
+4. Configure Cloud Tenant for the test case
 5. Test the configuration
 
 
@@ -233,6 +233,38 @@ For the integration between the Secret Server and the Cloud tenant, we are going
    ![Connector lab environment](images/lab-A-043.png)
 
 The steps on the Secret Server are now done and we need to switch to the Cloud tenant to integrate the Secret Server.
+
+## Give access rights to "sync" user
+
+To make sure the sync user can access the correct secrets, the account needs to get the correct access rights
+
+1. In the Secret Server UI, navigate to **Secrets > Use Case Examples**
+2. Right click this folder and select **Edit Folder**
+3. In the section *Folder Permissions* click the **Edit** text
+4. Add the created *Sync User* and provide **Editor** rights
+5. Click **Save**
+6. Your folder permissions should look like the below screenshot
+
+   ![Connector lab environment](images/lab-A-064.png)
+
+   ---
+
+   **Note**
+
+   Due to a setting on the show password, the account needs to have the Edit or Owner permissions to retrieve the password!
+
+   ---
+
+7. Navigate to **Secrets > Use Case Examples > Firewall & Networks** and repeat the steps above to add the *Sync User* with **View** rights
+
+---
+
+**Note**
+
+Using this for other secrets will then have the Sync User sync the secrets to the Cloud Tenant. Just remember that a System has to be assigned to the secret to also have a system populated in the Cloud Tenant. Otherwise the Systems can be added manually.
+
+---
+
 ## Configure Cloud Tenant
 
 To integrate the following steps will be configured:
@@ -353,7 +385,162 @@ Now that we have the Role ready we can proceed to next step. Adding the Secret S
 
    ![Connector lab environment](images/lab-A-041.png)
 
-3. While still in the settings of the Vault, click on History to see that the synchronsation has taken place
+3. While still in the settings of the Vault, click on History to see that the synchronsation has taken place and that objects have been added
 
-# Test configuration
+   ![Connector lab environment](images/lab-A-047.png)
+
+Now that we have the secrets being synchronised into the Cloud Tenant we can start to build the test environment.
+
+# Configure Cloud Tenant for the test case
+
+For the test case a new account is needed which will emulate the 3rd party that needs to have a connection to the Financial router as mentioned in the introduction.
+The following tasks are described in this part of the lab:
+- Create an account for the contractor (Alex Johnson)
+- Assign the rights for the Role PAS User
+- Assign the role to Alex Johnson
+
+## Create the Contractor account
+
+1. Navigate in the Cloud Tenant to **Access > Users**
+2. Click the **Add User** button
+
+   ![Connector lab environment](images/lab-A-048.png)
+
+3. Provide the following information for the account:
+
+   - **Login Name:** alex.johson (suffix can not be changed)
+   - **Email Address:** Use any email address you can access. This can be anything from corporate to personal email address
+   - **Display Name:** Alex Johson (Contractor)
+   - **Manual:** *Provide your own password*
+   - **Require password change at...** checked
+   - **Send email invite...** unchecked
+   - *Leave all other options default*
+   
+   ![Connector lab environment](images/lab-A-049.png)
+
+4. Click **Create User**
+
+## Assign the rights for Role Pas User
+
+To make sure the contractor, read role, has the correct rights, access rights need to be assigned. The assignment need to be done on four levels:
+
+- Vault (done at integration time)
+- Accounts
+- Domain
+- Systems
+
+### Accounts
+
+To assign rights the best, dynamical, way to assign rights is to make use of the *Sets*. This way new accounts (read secrets) that are being synced to the Cloud Tenant are added to the Role. As this might lead to issues in certain situations, like this scenario where contractors need access to systems, it is going to be done on account level
+
+1. Navigate to **Resources > Accounts**
+2. Click **fin-rtr.thylab.local**
+3. On the *Permissions* tab (left hand side and default) click **Add**
+
+   ![Connector lab environment](images/lab-A-050.png)
+
+4. Type **PAS** and select the *PAS User**
+
+   ![Connector lab environment](images/lab-A-051.png)
+
+5. Click **Add**
+6. Make sure the **View** and the **Login** are checked (default)
+
+   ![Connector lab environment](images/lab-A-052.png)
+
+7. Click **Save**
+
+### Domain
+
+The next step is to provide access rights to the Domain so it can use and see the accounts (secrets)
+
+1. Navigate to **Resources > Domains**
+2. Click the **Thylab.local** account, not the Thylab (Unreachable). This domain is populated due to the sync with Secret Server
+3. Under **Permissions** add the role **PAS User** with *View* rights using the know process
+
+### Systems
+
+Now that the Vault, Accounts and Domains are set up for the role the last step for the rights is to provide access to the system
+
+1. Navigate to **Resources > Systems**
+2. Click the **fin-rtr.thylab.local** system
+3. Under *Permissions* add the **PAS User** and make sure the *View* column is selected
+
+   ![Connector lab environment](images/lab-A-053.png)
+
+4. Click **Policy** in the left hand side and set the *System Policy > Allow access from a public network (web client only)* to **Yes**
+
+   ![Connector lab environment](images/lab-A-060.png)
+
+4. Click **Save**
+
+## Assign the role to Alex Johnson
+
+Now that the role have all the correct rights assigned, the account Alex Johnson needs to be assigned to the role.
+
+1. Navigate to **Access > Roles**
+2. Click on the **PAS User**
+
+   ![Connector lab environment](images/lab-A-054.png)
+
+3. Click *Members* and add alex.johnson@lab.\<tenant\> to the role
+
+   ![Connector lab environment](images/lab-A-055.png)
+
+4. Click **Save**
+
+# Test the basic configuration
+
+Now putting everything together a test is to be run to see if the scenario can be solved using the configuration and setup that have been done.
+
+1. Using your physical machine, open a new tab and navigate to the URL of your cloud tenant ``https://<tenant>.my.centrify.net`` and login with **alex.johnson@lab.\<tenant\>** using the initially set password
+
+   ![Connector lab environment](images/lab-A-056.png)
+
+2. As the default system is set to change the password, provide the new password for the account
+
+   ![Connector lab environment](images/lab-A-057.png)
+
+3. After you have set the new password, and it has been accepted by the system, click the **Start Over** text in the top right corner
+
+   ![Connector lab environment](images/lab-A-058.png)
+
+4. Login using the new password and the UI should open.
+
+   ![Connector lab environment](images/lab-A-059.png)
+
+5. Navigate to **Resources > Systems** and the *fin-rtr.thylab.local* system should be shown
+   ![Connector lab environment](images/lab-A-061.png)
+
+6. Right click the system and select **Select/Request Account**
+
+   ![Connector lab environment](images/lab-A-062.png)
+
+7. The *vyos* account should be shown
+
+   ![Connector lab environment](images/lab-A-063.png)
+
+8. Select the *vyos* account, and click **Select** a new window will open where the connection should be made. After a few seconds the screen will show the commandline of the vyos router
+
+   ![Connector lab environment](images/lab-A-065.png)
+
+9. Close the connection by typing *\<CTRL\>+D* and click **Close on the information screen which will close the screen
+
+   ![Connector lab environment](images/lab-A-066.png)
+
+
+# Conclusion
+
+As summary of the lab the following has been setup, configured and tested:
+
+- Log into a Cloud Tenant
+- Deploy a cloud connector
+- Integrate an existing Secret Server
+- Configure the Cloud Tenant
+- Test the configuration
+
+Using a few relative simple steps, an existing Secret Server installation can be integrated to a Cloud Tenant where a contractor can be given access to a system which lives in an infrastructure that does not have any inbound connectivity changes being made to a firewalled environment.
+
+
+
 
