@@ -31,7 +31,7 @@ By clicking on the Login Now button, you will be redirected to the URl and autom
 
 **Note**
 
-We can help you if you have forgotten your password, BUT to be able to help you, please leave the **mspadmin@\<tenant\>.lab** in the environment. **Do not delete it**.
+We can help you if you have forgotten your password, BUT to be able to help you, please leave the **mspadmin@lab.\<tenant\>** in the environment. **Do not delete it**.
 
 ---
 
@@ -69,7 +69,7 @@ Now that the lab environment is in a running state, follow the below steps to ge
    - **Username:** THYLAB\adm-training
    - **Password:** *Provided by the trainer*
 
-3. Open Chrome and navigate to the URL of your cloud tenant ``https://<tenant>.my.centrify.net`` and login using the same account (**admin@lab\<tenant\.>**) using *your set password*. The same as you did before on your machine.
+3. Open Chrome and navigate to the URL of your cloud tenant ``https://<tenant>.my.centrify.net`` and login using the same account (**admin@lab.\<tenant\>**) using *your set password*. The same as you did before on your machine.
 
    ![Start Cloud environment](images/lab-A-008.png)
 
