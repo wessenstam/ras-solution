@@ -55,7 +55,7 @@ If the environment is stopped, please start it by using the "play" button in the
 
 ![Start Skytap lab environment](images/lab-A-006.png)
 
-and wait till both VMs are started.  
+and wait till both VMs are started.
 
 ![Start Skytap lab environment](images/lab-A-007.png)
 
@@ -114,7 +114,7 @@ Now that the cloud connector has been installed it needs to be configured so it 
    ![Connector lab environment](images/lab-A-015.png)
 
 6. Click **Next**
-7. Login as the admin@lan.\<tenant\> user in the screen that opens up
+7. Login as the admin@lab.\<tenant\> user in the screen that opens up
 8. If the credentials were ok, a new screen will open. Leave all default (*Use Current user credentials*) and click **Next**
 
    ![Connector lab environment](images/lab-A-016.png)
@@ -408,9 +408,9 @@ The following tasks are described in this part of the lab:
 
 3. Provide the following information for the account:
 
-   - **Login Name:** alex.johson (suffix can not be changed)
+   - **Login Name:** alex.johnson (suffix can not be changed)
    - **Email Address:** Use any email address you can access. This can be anything from corporate to personal email address
-   - **Display Name:** Alex Johson (Contractor)
+   - **Display Name:** Alex Johnson (Contractor)
    - **Manual:** *Provide your own password*
    - **Require password change at...** checked
    - **Send email invite...** unchecked
